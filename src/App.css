@@ -112,6 +112,10 @@ body {
   transition: 0.3s ease-in-out;
 }
 
+.todo-block .left-todo .todo-name.active {
+  background: #dee1ec;
+}
+
 .completed {
   opacity: 0.6;
 }

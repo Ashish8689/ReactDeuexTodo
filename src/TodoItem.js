@@ -16,19 +16,12 @@ function TodoItem({
     e.preventDefault();
     HandleEdit(id, newinput);
     setinputDisabled(true);
-    // setnewinput(value);
-    document.querySelector(".todo-name").style.background = "transparent";
   };
 
   // ***********  After clicking edit button  *************
-  const HandleChangeValue = (e) => {
-    if (status === true) {
-      alert("Item is Completed");
-    } else {
-      setinputDisabled(!inputDisable);
-      setnewinput(value);
-      document.querySelector(".todo-name").style.background = "#dee1ec";
-    }
+  const HandleChangeValue = () => {
+    setinputDisabled(!inputDisable);
+    setnewinput(value);
   };
 
   return (
@@ -40,18 +33,21 @@ function TodoItem({
             type="text"
             value={inputDisable ? value : newinput}
             onChange={(e) => setnewinput(e.target.value)}
-            className="todo-name"
-            autoFocus="true"
+            className={inputDisable ? "todo-name" : "todo-name active"}
             disabled={inputDisable}
           />
         </form>
-        {/* <h1 className="todo-name">{value}</h1> */}
       </div>
 
       <div className="right-todo">
-        <div className="edit-todo-container" onClick={HandleChangeValue}>
-          <EditIcon className="edittodo" />
-        </div>
+        {status ? (
+          ""
+        ) : (
+          <div className="edit-todo-container" onClick={HandleChangeValue}>
+            <EditIcon className="edittodo" />
+          </div>
+        )}
+
         <div className="clear-todo-container">
           <ClearIcon className="cleartodo" onClick={() => HandleDelete(id)} />
         </div>

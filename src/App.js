@@ -6,23 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 function App() {
   const [inputvalue, setinputvalue] = useState("");
-  const [todos, settodos] = useState([
-    // {
-    //   id: 1,
-    //   value: "This is Done",
-    //   status: false,
-    // },
-    // {
-    //   id: 2,
-    //   value: "Marvel Studio",
-    //   status: false,
-    // },
-    // {
-    //   id: 3,
-    //   value: "Avengers Assemble",
-    //   status: false,
-    // },
-  ]);
+  const [todos, settodos] = useState([]);
 
   // **************  Handle Submit for Input value  *******************
 
@@ -69,14 +53,13 @@ function App() {
   // ***************  Handle Check Todo  ***********************
 
   const HandleEdit = (id, newinput) => {
-    let updatedtodos = todos.map((todo) => {
+    const updatedtodos = todos.map((todo) => {
       if (todo.id === id) {
         todo.value = newinput;
       }
       return todo;
     });
     settodos(updatedtodos);
-    console.log(updatedtodos);
   };
 
   return (
