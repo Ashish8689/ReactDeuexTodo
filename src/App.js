@@ -3,65 +3,32 @@ import "./App.css";
 import TodoItem from "./TodoItem";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 
 function App() {
   const [inputvalue, setinputvalue] = useState("");
-  const [toggle, settoggle] = useState(false);
-  const [edititem, setedititem] = useState("");
-
-  const [todos, settodos] = useState([
-    // {
-    //   id: 1,
-    //   value: "This is Done",
-    //   status: false,
-    // },
-    // {
-    //   id: 2,
-    //   value: "Marvel Studio",
-    //   status: false,
-    // },
-    // {
-    //   id: 3,
-    //   value: "Avengers Assemble",
-    //   status: false,
-    // },
-  ]);
+  const [todos, settodos] = useState([]);
 
   // **************  Handle Submit for Input value  *******************
 
   const HandleSubmit = (e) => {
     e.preventDefault();
-    // ******** For Edited Item  *************
-    if (edititem && toggle) {
-      const updatedtodos = todos.map((todo) => {
-        if (todo.id === edititem) {
-          todo.value = inputvalue;
-        }
-        return todo;
-      });
-      settodos(updatedtodos);
-      setedititem("");
-      settoggle(false);
+    // ********  For New Todos  ************
+
+    if (inputvalue.length !== 0) {
+      settodos([
+        ...todos,
+        {
+          id: new Date(),
+          value: inputvalue,
+          status: false,
+        },
+      ]);
+
       setinputvalue("");
     } else {
-      // ********  For New Todos  ************
-
-      if (inputvalue.length != 0) {
-        settodos([
-          ...todos,
-          {
-            id: new Date(),
-            value: inputvalue,
-            status: false,
-          },
-        ]);
-
-        setinputvalue("");
-      } else {
-        alert("Please enter details !!!");
-      }
+      alert("Please enter details !!!");
     }
+    // }
   };
 
   // ***************  Handle Delete Todo  ***********************
@@ -85,15 +52,14 @@ function App() {
 
   // ***************  Handle Check Todo  ***********************
 
-  const HandleEdit = (id) => {
-    const filterarray = todos.find((todo) => todo.id === id);
-    if (filterarray.status === false) {
-      setinputvalue(filterarray.value);
-      settoggle(true);
-      setedititem(id);
-    } else {
-      alert("Selected Item is Completed");
-    }
+  const HandleEdit = (id, newinput) => {
+    const updatedtodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.value = newinput;
+      }
+      return todo;
+    });
+    settodos(updatedtodos);
   };
 
   return (
@@ -110,15 +76,9 @@ function App() {
                 placeholder="Enter items to add ..."
               />
 
-              {toggle ? (
-                <Button className="button" onClick={HandleSubmit}>
-                  <EditIcon className="addbutton" />
-                </Button>
-              ) : (
-                <Button className="button" onClick={HandleSubmit}>
-                  <AddIcon className="addbutton" />
-                </Button>
-              )}
+              <Button className="button" onClick={HandleSubmit}>
+                <AddIcon className="addbutton" />
+              </Button>
             </div>
           </form>
         </div>
@@ -127,7 +87,7 @@ function App() {
         <div className="todo-container">
           {todos.map((todo, index) => (
             <TodoItem
-              key={todo.id}
+              key={index}
               todo={todo}
               index={index}
               HandleDelete={HandleDelete}
