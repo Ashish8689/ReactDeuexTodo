@@ -1,0 +1,153 @@
+.App {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(#e54d50, #e4547e);
+  text-align: center;
+}
+
+/* **********************   Input Container start  ************************ */
+
+.form-container {
+  margin: 0 auto;
+  max-width: 600px;
+  height: 55px;
+  display: flex;
+  background: whitesmoke;
+  border-radius: 4px;
+}
+
+.form-container input {
+  flex: 88%;
+  padding: 10px 15px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #40514e;
+}
+
+.form-container input::placeholder {
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.form-container .button {
+  flex: 12%;
+  display: grid;
+  place-items: center;
+  color: #40514e;
+}
+
+.form-container .button:hover {
+  background: transparent;
+}
+
+.form-container .button .addbutton {
+  color: #e54d50;
+}
+
+/* ****************************  Todos Container start  ******************************* */
+
+.app-inner-container {
+  margin: 0 auto;
+  max-width: 600px;
+  height: 100%;
+}
+
+.input-box-container {
+  padding: 100px 0;
+}
+
+.todo-block {
+  position: relative;
+  margin: 0 auto;
+  width: 92%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  background: whitesmoke;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.todo-block .left-todo {
+  position: relative;
+  flex: 80%;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+}
+
+.todo-block .left-todo .todo-name {
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3e3636;
+  transition: 0.3s ease-in-out;
+}
+
+.completed {
+  opacity: 0.6;
+}
+
+.todo-block .right-todo {
+  flex: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.todo-block .right-todo .cleartodo {
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.4s ease-in;
+}
+
+.todo-block .right-todo .cleartodo:hover {
+  transform: rotate(180deg);
+  color: #e54d50;
+}
+
+.right-todo .edit-todo-container .edittodo {
+  opacity: 0;
+  color: #e54d50;
+  transition: 0.3s ease-in-out;
+}
+
+.todo-block:hover .right-todo .edit-todo-container .edittodo {
+  opacity: 1;
+}
+
+.todo-block:hover .left-todo .todo-name {
+  margin-left: 25px;
+}
+
+/* **********************************  Clear Button start   ******************************** */
+
+.clear-container {
+  margin: 40px auto !important;
+  padding: 12px 0 !important;
+  width: 30%;
+  background: #dee1ec !important;
+  display: grid;
+  place-items: center;
+  border-radius: 6px !important;
+  cursor: pointer;
+}
+
+.clear-container .clear {
+  font-size: 18px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.clear-container:hover {
+  background: whitesmoke !important;
+}
