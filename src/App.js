@@ -2,85 +2,100 @@ import React, { useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
 
 function App() {
-  const [inputvalue, setinputvalue] = useState("");
-  const [todos, settodos] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [error, setError] = useState(false);
 
   // **************  Handle Submit for Input value  *******************
 
-  const HandleSubmit = (e) => {
-    e.preventDefault();
-    // ********  For New Todos  ************
-
-    if (inputvalue.length !== 0) {
-      settodos([
-        ...todos,
-        {
-          id: new Date(),
-          value: inputvalue,
-          status: false,
-        },
-      ]);
-
-      setinputvalue("");
+  const HandleSubmit = (event) => {
+    if (inputValue.length == 0) {
+      setError(true);
     } else {
-      alert("Please enter details !!!");
+      if (event.key === "Enter") {
+        setTodos([
+          {
+            id: new Date().getTime(),
+            TodoInputValue: inputValue,
+            isCompleted: false,
+          },
+          ...todos,
+        ]);
+        setInputValue("");
+      }
     }
-    // }
   };
 
   // ***************  Handle Delete Todo  ***********************
 
   const HandleDelete = (id) => {
-    const filtertodo = todos.filter((todo) => todo.id !== id);
-    settodos(filtertodo);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   // ***************  Handle Check Todo  ***********************
 
   const HandleCheck = (id) => {
-    const updatedtodos = todos.map((todo) => {
+    const originalTodo = todos.slice();
+    const updatedTodos = originalTodo.map((todo) => {
       if (todo.id === id) {
-        todo.status = !todo.status;
+        todo.isCompleted = !todo.isCompleted;
       }
       return todo;
     });
-    settodos(updatedtodos);
+
+    // **********  Sortings as per isCompleted  ***********
+    setTodos(updatedTodos.sort((x) => (x.isCompleted ? 1 : -1)));
   };
 
-  // ***************  Handle Check Todo  ***********************
+  // ***************  Handle Edit Todo  ***********************
 
-  const HandleEdit = (id, newinput) => {
-    const updatedtodos = todos.map((todo) => {
+  const HandleEdit = (id, newInput) => {
+    const originalTodo = todos.slice();
+    const updatedTodos = originalTodo.map((todo) => {
       if (todo.id === id) {
-        todo.value = newinput;
+        todo.TodoInputValue = newInput;
       }
       return todo;
     });
-    settodos(updatedtodos);
+    setTodos(updatedTodos);
+  };
+
+  // ***************  Handle All Clear Todo  ********************
+
+  const HandleAllClear = () => {
+    setTodos([]);
+    setInputValue("");
+    setError(false);
   };
 
   return (
     <div className="App">
       <div className="app-inner-container">
+        {/* ************  Title container start  ***************** */}
+        <div className="title-container">
+          <h1 className="todo-title">TodoList</h1>
+        </div>
+
         {/* **************   Input Container start   ********************* */}
         <div className="input-box-container">
-          <form onSubmit={HandleSubmit}>
-            <div className="form-container">
-              <input
-                type="text"
-                value={inputvalue}
-                onChange={(e) => setinputvalue(e.target.value)}
-                placeholder="Enter items to add ..."
-              />
+          <div className="form-container">
+            <input
+              type="text"
+              id="name"
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setError(false);
+              }}
+              placeholder="Add your new Todo"
+              onKeyPress={HandleSubmit}
+              autoComplete="off"
+            />
+          </div>
 
-              <Button className="button" onClick={HandleSubmit}>
-                <AddIcon className="addbutton" />
-              </Button>
-            </div>
-          </form>
+          {error ? <p className="error">Please enter todo item*</p> : ""}
         </div>
 
         {/* *****************  Todos Container block  ***************** */}
@@ -95,15 +110,16 @@ function App() {
               HandleEdit={HandleEdit}
             />
           ))}
-
-          {/* **************  Clear Entire Todo array  ********************/}
-
-          {todos.length > 0 && (
-            <Button className="clear-container" onClick={() => settodos([])}>
-              <h2 className="clear">All Clear</h2>
-            </Button>
-          )}
         </div>
+        {/* ****** Todo container end ****** */}
+
+        {/* **************  Clear Entire Todo array  ********************/}
+
+        {todos.length > 0 && (
+          <div className="clear-container" onClick={HandleAllClear}>
+            <Button className="clear">Clear All</Button>
+          </div>
+        )}
       </div>
     </div>
   );
