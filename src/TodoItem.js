@@ -15,8 +15,10 @@ function TodoItem({
 
   const HandleSubmit = (event) => {
     if (event.key === "Enter") {
-      HandleEdit(id, newInput);
-      setInputDisabled(true);
+      if (newInput.length > 0) {
+        HandleEdit(id, newInput);
+        setInputDisabled(true);
+      }
     }
   };
 

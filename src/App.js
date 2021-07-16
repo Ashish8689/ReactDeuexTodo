@@ -117,7 +117,7 @@ function App() {
 
         {todos.length > 0 && (
           <div className="clear-container" onClick={HandleAllClear}>
-            <Button className="clear">Clear All</Button>
+            <Button className="clear">All Clear</Button>
           </div>
         )}
       </div>
