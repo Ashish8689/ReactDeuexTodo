@@ -37,6 +37,25 @@ body {
 
 /* **********************   Input Container start  ************************ */
 
+.selected-clear-container{
+  margin: 0 auto 15px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-checkbox{
+  margin-left: 14px!important;
+}
+
+.selected-clear-button{
+  background: #e54d50!important;
+  color: #fff!important;
+  padding: 8px 10px!important;
+  font-weight: 600!important;
+}
+
 .input-box-container {
   height: 15%;
   display: flex;
