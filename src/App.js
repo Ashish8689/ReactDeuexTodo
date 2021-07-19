@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
 import Button from "@material-ui/core/Button";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Checkbox from "@material-ui/core/Checkbox";
 
 function App() {
@@ -41,8 +42,8 @@ function App() {
   // ***************  Handle Check Todo  ***********************
 
   const HandleCheck = (id) => {
-    const originalTodo = todos.slice();
-    const updatedTodos = originalTodo.map((todo) => {
+    const cloneTodo = todos.slice();
+    const updatedTodos = cloneTodo.map((todo) => {
       if (todo.id === id) {
         todo.isCompleted = !todo.isCompleted;
       }
@@ -66,8 +67,8 @@ function App() {
 
   const HandleEdit = (id, newInput) => {
     setSingleEdit(true);
-    const originalTodo = todos.slice();
-    const updatedTodos = originalTodo.map((todo) => {
+    const cloneTodo = todos.slice();
+    const updatedTodos = cloneTodo.map((todo) => {
       if (todo.id === id) {
         todo.TodoInputValue = newInput;
       }
@@ -91,8 +92,8 @@ function App() {
 
   const HandleSelectedCheckbox = () =>{
     setSelectedCheck(!selectedCheck);
-    const originalTodo = todos.slice();
-    const updatedTodo = originalTodo.map(todo => {
+    const cloneTodo = todos.slice();
+    const updatedTodo = cloneTodo.map(todo => {
        if(selectedCheck === false){
          todo.isCompleted = true;
        }
@@ -109,8 +110,7 @@ function App() {
   // **************** Handle Selected Clear  **********************
 
   const HandleSelectedClear = () =>{
-    const originalTodo = todos.slice();
-    const updatedTodo = originalTodo.filter(todo => todo.isCompleted !== true);
+    const updatedTodo = todos.filter(todo => todo.isCompleted !== true);
     setTodos(updatedTodo);
     setSelectedCheck(false);
     setInputValue("");
@@ -124,7 +124,7 @@ function App() {
       <div className="app-inner-container">
         {/* ************  Title container start  ***************** */}
         <div className="title-container">
-          <h1 className="todo-title">TodoList</h1>
+          <h1 className="todo-title">Todo<span>List</span></h1>
         </div>
 
         {/* **************   Input Container start   ********************* */}
@@ -143,6 +143,14 @@ function App() {
              autoComplete="off"
              disabled={selectedCheck || singleEdit}
            />
+
+           {/* **************  Clear Entire Todo array  ********************/}
+
+        {todos.length > 0 && (
+          <div className="clear-container" onClick={HandleAllClear}>
+               <DeleteForeverIcon className="clear"/>
+          </div>
+        )}
           </div>
 
           {error ? <p className="error">Please enter todo item*</p> : ""}
@@ -180,13 +188,7 @@ function App() {
         </div>
         {/* ****** Todo container end ****** */}
 
-        {/* **************  Clear Entire Todo array  ********************/}
-
-        {todos.length > 0 && (
-          <div className="clear-container" onClick={HandleAllClear}>
-            <Button className="clear">All Clear</Button>
-          </div>
-        )}
+        
       </div>
     </div>
   );
