@@ -2,89 +2,179 @@ import React, { useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Checkbox from "@material-ui/core/Checkbox";
 
 function App() {
-  const [inputvalue, setinputvalue] = useState("");
-  const [todos, settodos] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [error, setError] = useState(false);
+  const [selectedCheck, setSelectedCheck] = useState(false);
+  const [singleCheck, setSingleCheck] = useState(false);
+  const [singleEdit, setSingleEdit] = useState(false);
 
   // **************  Handle Submit for Input value  *******************
 
-  const HandleSubmit = (e) => {
-    e.preventDefault();
-    // ********  For New Todos  ************
-
-    if (inputvalue.length !== 0) {
-      settodos([
-        ...todos,
-        {
-          id: new Date(),
-          value: inputvalue,
-          status: false,
-        },
-      ]);
-
-      setinputvalue("");
+  const HandleSubmit = (event) => {
+    if (inputValue.length === 0) {
+      setError(true);
     } else {
-      alert("Please enter details !!!");
+      if (event.key === "Enter") {
+        setTodos([
+          {
+            id: new Date().getTime(),
+            TodoInputValue: inputValue,
+            isCompleted: false,
+          },
+          ...todos,
+        ]);
+        setInputValue("");
+      }
     }
-    // }
   };
 
   // ***************  Handle Delete Todo  ***********************
 
   const HandleDelete = (id) => {
-    const filtertodo = todos.filter((todo) => todo.id !== id);
-    settodos(filtertodo);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   // ***************  Handle Check Todo  ***********************
 
   const HandleCheck = (id) => {
-    const updatedtodos = todos.map((todo) => {
+    const cloneTodo = todos.slice();
+    const updatedTodos = cloneTodo.map((todo) => {
       if (todo.id === id) {
-        todo.status = !todo.status;
+        todo.isCompleted = !todo.isCompleted;
       }
       return todo;
     });
-    settodos(updatedtodos);
+    
+    // *************  Checking if Single todo is checked or not  ****************
+    const SearchSingleCheck = updatedTodos.find(todo => todo.isCompleted === true);
+    if(SearchSingleCheck){
+      setSingleCheck(true);
+    }
+    else{
+      setSingleCheck(false);
+    }
+
+    // **********  Sortings as per isCompleted  ***********
+    setTodos(updatedTodos.sort((x) => (x.isCompleted ? 1 : -1)));
   };
 
-  // ***************  Handle Check Todo  ***********************
+  // ***************  Handle Edit Todo  ***********************
 
-  const HandleEdit = (id, newinput) => {
-    const updatedtodos = todos.map((todo) => {
+  const HandleEdit = (id, newInput) => {
+    setSingleEdit(true);
+    const cloneTodo = todos.slice();
+    const updatedTodos = cloneTodo.map((todo) => {
       if (todo.id === id) {
-        todo.value = newinput;
+        todo.TodoInputValue = newInput;
       }
       return todo;
     });
-    settodos(updatedtodos);
+    setTodos(updatedTodos);
   };
+
+  // ***************  Handle All Clear Todo  ********************
+
+  const HandleAllClear = () => {
+    setTodos([]);
+    setInputValue("");
+    setSelectedCheck(false);
+    setError(false);
+    setSingleCheck(false);
+  };
+
+
+  // ***************  Handle Selected Checkbox  *******************
+
+  const HandleSelectedCheckbox = () =>{
+    setSelectedCheck(!selectedCheck);
+    const cloneTodo = todos.slice();
+    const updatedTodo = cloneTodo.map(todo => {
+       if(selectedCheck === false){
+         todo.isCompleted = true;
+       }
+       else{
+         todo.isCompleted = false;
+         setSingleCheck(false);
+       }
+       return todo
+      });
+
+     setTodos(updatedTodo);
+  }
+
+  // **************** Handle Selected Clear  **********************
+
+  const HandleSelectedClear = () =>{
+    const updatedTodo = todos.filter(todo => todo.isCompleted !== true);
+    setTodos(updatedTodo);
+    setSelectedCheck(false);
+    setInputValue("");
+    setError(false);
+    setSingleCheck(false);
+  }
+
 
   return (
     <div className="App">
       <div className="app-inner-container">
+        {/* ************  Title container start  ***************** */}
+        <div className="title-container">
+          <h1 className="todo-title">Todo<span>List</span></h1>
+        </div>
+
         {/* **************   Input Container start   ********************* */}
         <div className="input-box-container">
-          <form onSubmit={HandleSubmit}>
-            <div className="form-container">
-              <input
-                type="text"
-                value={inputvalue}
-                onChange={(e) => setinputvalue(e.target.value)}
-                placeholder="Enter items to add ..."
-              />
+          <div className="form-container">
+             <input
+             type="text"
+             id="name"
+             value={inputValue}
+             onChange={(e) => {
+               setInputValue(e.target.value);
+               setError(false);
+             }}
+             placeholder="Add your new Todo"
+             onKeyPress={HandleSubmit}
+             autoComplete="off"
+             disabled={selectedCheck || singleEdit}
+           />
 
-              <Button className="button" onClick={HandleSubmit}>
-                <AddIcon className="addbutton" />
-              </Button>
-            </div>
-          </form>
+           {/* **************  Clear Entire Todo array  ********************/}
+
+        {todos.length > 0 && (
+          <div className="clear-container" onClick={HandleAllClear}>
+               <DeleteForeverIcon className="clear"/>
+          </div>
+        )}
+          </div>
+
+          {error ? <p className="error">Please enter todo item*</p> : ""}
         </div>
 
         {/* *****************  Todos Container block  ***************** */}
         <div className="todo-container">
+
+          {/* *************** Selected Clear Container  ******************** */}
+          {singleCheck ? (
+              <div className="selected-clear-container">
+              <Checkbox
+              className="selected-checkbox"
+              checked={selectedCheck}
+                onChange={HandleSelectedCheckbox}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+              <div className="selected-clear-button-container" onClick={HandleSelectedClear}>
+                <Button className="selected-clear-button">Clear Selected</Button>
+              </div>
+            </div>
+          ) : " " }
+         
+
           {todos.map((todo, index) => (
             <TodoItem
               key={index}
@@ -95,15 +185,10 @@ function App() {
               HandleEdit={HandleEdit}
             />
           ))}
-
-          {/* **************  Clear Entire Todo array  ********************/}
-
-          {todos.length > 0 && (
-            <Button className="clear-container" onClick={() => settodos([])}>
-              <h2 className="clear">All Clear</h2>
-            </Button>
-          )}
         </div>
+        {/* ****** Todo container end ****** */}
+
+        
       </div>
     </div>
   );

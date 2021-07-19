@@ -5,23 +5,64 @@ body {
   width: 100%;
   height: 100vh;
   background: linear-gradient(#e54d50, #e4547e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-inner-container {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 650px;
+  height: 850px;
+  background: rebeccapurple;
+  background: whitesmoke;
+  border-radius: 10px;
+  /* overflow: hidden; */
+}
+
+/* ********************  Todo Title container  ************************** */
+
+.title-container {
+  height: 10%;
+}
+
+.todo-title {
+  padding-top: 25px;
+  font-size: 40px;
+  font-weight: 600;
   text-align: center;
+  letter-spacing: 1px;
+}
+
+.todo-title span{
+  color: #e54d50;
 }
 
 /* **********************   Input Container start  ************************ */
 
+
+.input-box-container {
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .form-container {
   margin: 0 auto;
-  max-width: 600px;
-  height: 55px;
+  width: 90%;
+  height: 60px;
   display: flex;
-  background: whitesmoke;
-  border-radius: 4px;
+  border: 2px solid #e54d50;
+  border-radius: 6px;
 }
 
 .form-container input {
-  flex: 88%;
-  padding: 10px 15px;
+  flex: 90%;
+  padding: 10px 20px;
   width: 100%;
   height: 100%;
   border: none;
@@ -34,56 +75,88 @@ body {
 }
 
 .form-container input::placeholder {
-  font-size: 15px;
+  font-size: 16px;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
+  color: #e54d50;
 }
 
-.form-container .button {
-  flex: 12%;
+
+/* *****************  Clear Button start   **************** */
+
+.clear-container {
+  flex: 10%;
   display: grid;
   place-items: center;
-  color: #40514e;
+  cursor: pointer;
+  transform: 0.3s ease-in;
 }
 
-.form-container .button:hover {
-  background: transparent;
+.clear-container .clear {
+  color:#e54d50!important;
+  font-size: 18px;
+  text-transform: capitalize;
+  font-weight: 600;
+  transition: .2s ease-in;
 }
 
-.form-container .button .addbutton {
-  color: #e54d50;
+.clear-container .clear:hover {
+  color: #000!important;
+}
+
+
+/* ***************  Selected Clear Button start   ***************** */
+
+.selected-clear-container{
+  margin: 0 auto 15px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-checkbox{
+  margin-left: 14px!important;
+}
+
+.selected-clear-button{
+  background: #e54d50!important;
+  color: #fff!important;
+  padding: 8px 10px!important;
+  font-weight: 600!important;
 }
 
 /* ****************************  Todos Container start  ******************************* */
 
-.app-inner-container {
-  margin: 0 auto;
-  max-width: 600px;
-  height: 100%;
+.todo-container {
+  overflow-y: scroll;
+  height: 75%;
 }
 
-.input-box-container {
-  padding: 100px 0;
+/* *****************  Scroll bar  ************* */
+
+.todo-container::-webkit-scrollbar {
+  display: none;
 }
 
 .todo-block {
   position: relative;
   margin: 0 auto;
-  width: 92%;
+  width: 90%;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   height: 60px;
-  background: whitesmoke;
+  background: #dee1ec;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .todo-block .left-todo {
   position: relative;
-  flex: 80%;
-  padding: 0 15px;
+  flex: 85%;
+  padding: 0 0 0 15px;
   display: flex;
   align-items: center;
   height: 100%;
@@ -98,11 +171,12 @@ body {
 }
 
 .todo-block .left-todo .todo-name {
+  width: 100%;
   height: 90%;
   border: none;
   margin: auto 0;
   margin-left: 10px;
-  padding-left: 10px;
+  padding-left: 15px;
   font-size: 18px;
   font-weight: 600;
   background: transparent;
@@ -113,7 +187,7 @@ body {
 }
 
 .todo-block .left-todo .todo-name.active {
-  background: #dee1ec;
+  background: white;
 }
 
 .completed {
@@ -121,7 +195,7 @@ body {
 }
 
 .todo-block .right-todo {
-  flex: 20%;
+  flex: 15%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -130,47 +204,34 @@ body {
 .todo-block .right-todo .cleartodo {
   font-size: 20px;
   cursor: pointer;
+  color: #e54d50;
   transition: 0.4s ease-in;
+}
+
+.todo-block .edit-todo-container,
+.todo-block .clear-todo-container {
+  display: grid;
+  place-items: center;
+}
+
+.todo-block .edit-todo-container .edittodo {
+  font-size: 20px;
+  color: #e54d50;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 
 .todo-block .right-todo .cleartodo:hover {
   transform: rotate(180deg);
-  color: #e54d50;
-}
-
-.right-todo .edit-todo-container .edittodo {
-  opacity: 0;
-  color: #e54d50;
-  transition: 0.3s ease-in-out;
-}
-
-.todo-block:hover .right-todo .edit-todo-container .edittodo {
-  opacity: 1;
 }
 
 .todo-block:hover .left-todo .todo-name {
-  margin-left: 25px;
+  margin-left: 15px;
 }
 
-/* **********************************  Clear Button start   ******************************** */
 
-.clear-container {
-  margin: 40px auto !important;
-  padding: 12px 0 !important;
-  width: 30%;
-  background: #dee1ec !important;
-  display: grid;
-  place-items: center;
-  border-radius: 6px !important;
-  cursor: pointer;
-}
-
-.clear-container .clear {
-  font-size: 18px;
-  text-transform: capitalize;
+.error {
+  padding: 4px 34px;
+  color: red;
   font-weight: 600;
-}
-
-.clear-container:hover {
-  background: whitesmoke !important;
 }
